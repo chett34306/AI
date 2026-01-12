@@ -3,4 +3,4 @@ Training model is at this colab - https://colab.research.google.com/drive/1rgT2f
 moved the trained files like house_model.pkl, app.py, requirements.txt
 moved them to github under chett34306/AI repo
 connected with streamlit for UI and gave access to github at https://houzeprediction.streamlit.app/
-Need to review the errors and fix it. 
+Need to review the errors and fix them. 
