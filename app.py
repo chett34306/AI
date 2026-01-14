@@ -1,20 +1,24 @@
 import streamlit as st
-import joblib
+import tensorflow as tf
 import numpy as np
 
-# Load the trained model
-model = joblib.load('house_model.pkl')
+# Load the model
+@st.cache_resource
+def load_my_model():
+    return tf.keras.models.load_model('house_model.h5')
 
-st.title("House Price Predictor")
-st.write("Enter the details below to estimate the house price.")
+model = load_my_model()
 
-# Create input fields for user data
-sqft = st.number_input("Square Footage", min_value=500, max_value=10000, value=1500)
-bedrooms = st.slider("Number of Bedrooms", 1, 10, 3)
-bathrooms = st.slider("Number of Bathrooms", 1, 5, 2)
+st.title("🏠 House Price Predictor")
+st.write("Enter the number of bedrooms to estimate the price.")
 
-# Prediction logic
+# User input
+bedrooms = st.number_input("Number of Bedrooms", min_value=1, max_value=20, value=3)
+
 if st.button("Predict Price"):
-    features = np.array([[sqft, bedrooms, bathrooms]])
-    prediction = model.predict(features)
-    st.success(f"The estimated price is ${prediction[0]:,.2f}")
+    # Make prediction
+    prediction = model.predict(np.array([[float(bedrooms)]]))[0][0]
+    # Convert back from 100ks to dollars
+    final_price = prediction * 100000
+
+    st.success(f"Estimated Price: ${final_price:,.2f}")
